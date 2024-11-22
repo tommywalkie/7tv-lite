@@ -1,9 +1,22 @@
 import { createApp } from "vue";
-import { VueQueryPlugin } from "@tanstack/vue-query";
+import { VueQueryPlugin, VueQueryPluginOptions } from "@tanstack/vue-query";
 import "virtual:windi.css";
 import "./style.css";
 import App from "./App.vue";
 
 const app = createApp(App);
-app.use(VueQueryPlugin);
+
+const vueQueryOptions: VueQueryPluginOptions = {
+  queryClientConfig: {
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+      },
+    },
+  },
+};
+
+app.use(VueQueryPlugin, vueQueryOptions);
 app.mount("#app");

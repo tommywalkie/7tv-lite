@@ -1,112 +1,162 @@
-<script setup lang="ts">
-import { ref, computed } from "vue";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
+<template>
+  <div>
+    <div class="p-4">
+      <div
+        class="w-full max-w-full w-full xs:w-full sm:w-full md:w-full lg:w-3xl xl:w-3xl mx-auto"
+      >
+        <div class="flex items-center space-x-2">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search emotes..."
+            class="w-full p-2 mb-2 border border-gray-700 focus:outline-none rounded bg-gray-800"
+          />
+          <select
+            v-model="sortOption"
+            class="ml-4 p-2 border border-gray-500 rounded mb-auto bg-gray-700"
+          >
+            <option value="created_at">New</option>
+            <option value="popularity">Top</option>
+          </select>
+        </div>
+        <label class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            v-model="isExactSearch"
+            class="form-checkbox"
+          />
+          <span class="text-sm text-gray-400">Exact Search</span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-10 gap-4 p-4"
+    >
+      <template v-if="isFetching">
+        <EmoteSkeleton v-for="n in 20" :key="n" />
+      </template>
+      <template v-else v-for="emote in emotes" :key="emote.id">
+        <EmoteCard :emote="emote" />
+      </template>
+    </div>
+    <Pagination
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      @goToPage="goToPage"
+      @nextPage="nextPage"
+      @prevPage="prevPage"
+      :disabled="isFetching"
+    />
+  </div>
+</template>
 
-const GET_RECENT_EMOTES = `
-  query GetRecentEmotes($page: Int!) {
-    emotes(
-      query: ""
-      sort: { order: DESCENDING, value: "created_at" }
-      limit: 20
-      page: $page
-    ) {
+<script setup lang="ts">
+import { ref, watch } from "vue";
+import { useQuery } from "@tanstack/vue-query";
+import debounce from "lodash.debounce";
+import EmoteSkeleton from "./EmoteSkeleton.vue";
+import EmoteCard from "./EmoteCard.vue";
+import Pagination from "./Pagination.vue";
+
+const SEARCH_EMOTES_QUERY = `
+  query SearchEmotes($query: String!, $page: Int, $limit: Int, $filter: EmoteSearchFilter) {
+    emotes(query: $query, page: $page, limit: $limit, filter: $filter) {
       count
+      max_page
       items {
         id
         name
-        created_at
-        animated
-        listed
+        state
+        trending
         owner {
           id
           username
+          display_name
+          style {
+            color
+            paint_id
+          }
         }
+        flags
         host {
           url
+          files {
+            name
+            format
+            width
+            height
+          }
         }
       }
     }
   }
 `;
 
-interface Emote {
-  id: string;
-  name: string;
-  created_at: string;
-  animated: boolean;
-  listed: boolean;
-  owner: {
-    id: string;
-    username: string;
-  };
-  host: {
-    url: string;
-  };
-}
-
 const currentPage = ref(1);
 const totalPages = ref(1);
-
-const queryClient = useQueryClient();
+const searchQuery = ref("");
+const debouncedSearchQuery = ref("");
+const isExactSearch = ref(false);
+const sortOption = ref("created_at");
 
 const {
   data: emotes,
   refetch,
   isFetching,
-  isError,
 } = useQuery({
-  queryKey: ["emotes", currentPage],
+  queryKey: [
+    "emotes",
+    currentPage,
+    debouncedSearchQuery,
+    isExactSearch,
+    sortOption,
+  ],
   queryFn: async ({ queryKey }) => {
-    const [_key, page] = queryKey;
+    const [_key, page, search, exact_match, sortValue] = queryKey;
+    const category =
+      sortValue === "popularity"
+        ? "TOP"
+        : sortValue === "created_at"
+        ? "NEW"
+        : undefined;
+    const filter = {
+      ...(category && { category }),
+      exact_match,
+      ignore_tags: false,
+      zero_width: false,
+      animated: false,
+      aspect_ratio: "",
+    };
     const response = await fetch("https://7tv.io/v3/gql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: GET_RECENT_EMOTES,
-        variables: { page },
+        query: SEARCH_EMOTES_QUERY,
+        variables: {
+          query: search,
+          page,
+          limit: 20,
+          filter,
+        },
       }),
     });
 
     const { data } = await response.json();
-    totalPages.value = Math.ceil(data.emotes.count / 20);
+    totalPages.value = data.emotes.max_page;
     return data.emotes.items;
   },
 });
 
-const refresh = () => {
-  queryClient.invalidateQueries({ queryKey: ["emotes", currentPage] });
+const updateDebouncedQuery = debounce((newQuery: string) => {
+  debouncedSearchQuery.value = newQuery;
+  currentPage.value = 1;
   refetch();
-};
+}, 300);
 
-const pages = computed<(number | string)[]>(() => {
-  const maxPagesToShow = 6;
-  const pagesArray: (number | string)[] = [];
-  const total = totalPages.value;
-
-  if (total <= maxPagesToShow) {
-    for (let i = 1; i <= total; i++) {
-      pagesArray.push(i);
-    }
-  } else {
-    if (currentPage.value <= 3) {
-      pagesArray.push(1, 2, 3, 4, "...", total);
-    } else if (currentPage.value >= total - 2) {
-      pagesArray.push(1, "...", total - 3, total - 2, total - 1, total);
-    } else {
-      pagesArray.push(
-        1,
-        "...",
-        currentPage.value - 1,
-        currentPage.value,
-        currentPage.value + 1,
-        "...",
-        total
-      );
-    }
-  }
-  return pagesArray;
+watch(searchQuery, (newQuery) => {
+  updateDebouncedQuery(newQuery);
 });
 
 const goToPage = (page: number) => {
@@ -119,77 +169,3 @@ const goToPage = (page: number) => {
 const nextPage = () => goToPage(currentPage.value + 1);
 const prevPage = () => goToPage(currentPage.value - 1);
 </script>
-
-<template>
-  <div>
-    <div class="grid grid-cols-5 gap-4 p-4">
-      <template v-for="emote in emotes">
-        <a :href="`https://7tv.app/emotes/${emote.id}`" target="_blank">
-          <div
-            :key="emote.id"
-            class="flex flex-col items-center bg-gray-800 rounded-lg m-auto h-35 justify-center p-3"
-          >
-            <img
-              :src="`https://cdn.7tv.app/emote/${emote.id}/2x.webp`"
-              :alt="emote.name"
-              class="max-w-20 max-h-20 object-cover rounded-md"
-            />
-            <div class="mt-2 text-center">
-              <p class="text-white text-sm truncate">{{ emote.name }}</p>
-              <p class="text-gray-400 text-xs truncate">
-                {{ emote.owner.username }}
-              </p>
-            </div>
-          </div>
-        </a>
-      </template>
-    </div>
-    <div class="flex justify-center mt-4 gap-2">
-      <button
-        @click="prevPage"
-        class="px-4 py-2 bg-gray-700 text-white rounded"
-        :disabled="currentPage === 1"
-      >
-        Prev
-      </button>
-      <template v-for="(page, index) in pages">
-        <button
-          @click="
-            page > 30 && index === pages.length - 1
-              ? null
-              : goToPage(page as number)
-          "
-          :class="[
-            'px-4 py-2',
-            {
-              'bg-blue-500': page === currentPage,
-              'bg-gray-700': page !== currentPage,
-              'opacity-50': page > 30 && index === pages.length - 1,
-              'cursor-not-allowed': page > 30 && index === pages.length - 1,
-            },
-          ]"
-          class="text-white"
-          v-if="typeof page === 'number'"
-        >
-          {{ page }}
-        </button>
-        <span v-else class="px-4 py-2 text-white">...</span>
-      </template>
-      <button
-        @click="nextPage"
-        class="px-4 py-2 bg-gray-700 text-white rounded"
-        :disabled="currentPage === totalPages"
-      >
-        Next
-      </button>
-    </div>
-    <div class="flex justify-center mt-4">
-      <button
-        @click="refresh"
-        class="px-4 py-2 bg-green-500 text-white rounded"
-      >
-        Refresh
-      </button>
-    </div>
-  </div>
-</template>
