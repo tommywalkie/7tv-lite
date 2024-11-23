@@ -14,6 +14,7 @@ export default defineConfig({
     vue(),
     WindiCSS({
       config: {
+        darkMode: 'media',
         theme: {
           extend: {
             colors: {

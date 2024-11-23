@@ -8,17 +8,20 @@
               v-model="searchQuery"
               type="text"
               placeholder="Search emotes..."
-              class="w-full p-2 mb-2 border border-gray-700 focus:outline-none rounded bg-gray-800 pr-15"
+              class="w-full p-2 mb-2 border border-gray-700 focus:outline-none rounded bg-gray-200 dark:bg-gray-800 pr-15"
             />
             <button
-              class="absolute right-0 bottom-2 top-0 px-3 bg-transparent opacity-50 outline-none border-none"
+              class="absolute right-0 bottom-2 top-0 px-3 bg-transparent opacity-50 outline-none border-none text-gray-700 dark:text-gray-400"
               @click="clearSearch"
             >
               &times;
             </button>
           </div>
 
-          <select v-model="category" class="ml-4 p-2 border border-gray-500 rounded mb-auto bg-gray-700">
+          <select
+            v-model="category"
+            class="ml-4 p-2 border border-gray-500 rounded mb-auto bg-gray-300 dark:bg-gray-700"
+          >
             <option value="NEW">Latest</option>
             <option value="TOP">Top</option>
             <option value="TRENDING_DAY">Trending</option>

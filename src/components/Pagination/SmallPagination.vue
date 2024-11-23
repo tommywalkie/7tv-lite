@@ -3,7 +3,7 @@
     <button
       @click="prevPage"
       :disabled="currentPage === 1 || disabled"
-      class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-primary-600"
+      class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-white rounded hover:bg-primary-600"
       v-if="totalPages > 1 && currentPage !== 1"
     >
       Prev
@@ -12,7 +12,7 @@
       @click="goToPage(1)"
       :disabled="currentPage === 1 || disabled"
       :class="[
-        'px-4 py-2 bg-gray-700 text-white rounded hover:bg-primary-600',
+        'px-4 py-2 bg-gray-200 dark:bg-gray-700 text-white rounded hover:bg-primary-600',
         { 'opacity-50': currentPage === 1, 'cursor-not-allowed': currentPage === 1 },
       ]"
       v-if="totalPages > 1 && currentPage !== 1"
@@ -26,7 +26,7 @@
       @click="goToPage(totalPages)"
       :disabled="currentPage === totalPages || disabled"
       :class="[
-        'px-4 py-2 bg-gray-700 text-white rounded hover:bg-primary-600',
+        'px-4 py-2 bg-gray-200 dark:bg-gray-700 text-white rounded hover:bg-primary-600',
         { 'opacity-50': currentPage === totalPages },
       ]"
       v-if="totalPages > 1 && currentPage !== totalPages"
@@ -36,7 +36,7 @@
     <button
       @click="nextPage"
       :disabled="currentPage === totalPages || disabled"
-      class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-primary-600"
+      class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-white rounded hover:bg-primary-600"
       v-if="totalPages > 1 && currentPage !== totalPages"
     >
       Next

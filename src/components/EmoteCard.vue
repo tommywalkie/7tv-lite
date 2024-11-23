@@ -3,7 +3,7 @@
     <div
       :key="emote.id"
       :class="[
-        'flex flex-col items-center bg-gray-800 rounded-lg m-auto h-35 justify-center p-3 hover:bg-gray-700 focus:bg-gray-800 transition-colors duration-100 relative',
+        'flex flex-col items-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-800 dark:focus:bg-gray-700 rounded-lg m-auto h-35 justify-center p-3 transition-colors duration-100 relative',
         { 'border-2 border-yellow-500': isZeroWidth },
       ]"
     >
@@ -15,8 +15,8 @@
         />
       </div>
       <div class="mt-2 text-center max-w-full mt-auto">
-        <p class="text-white text-sm truncate max-w-full">{{ emote.name }}</p>
-        <p class="text-gray-400 text-xs truncate max-w-full">
+        <p class="text-sm truncate max-w-full text-gray-800 dark:text-gray-400">{{ emote.name }}</p>
+        <p class="text-xs truncate max-w-full text-gray-500 dark:text-gray-500">
           {{ emote.owner.username }}
         </p>
       </div>
