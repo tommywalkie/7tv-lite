@@ -1,10 +1,10 @@
-import { createApp } from "vue";
-import { VueQueryPlugin, VueQueryPluginOptions } from "@tanstack/vue-query";
-import "virtual:windi.css";
-import "./style.css";
-import App from "./App.vue";
+import { createApp } from 'vue'
+import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query'
+import 'virtual:windi.css'
+import './style.css'
+import App from './App.vue'
 
-const app = createApp(App);
+const app = createApp(App)
 
 const vueQueryOptions: VueQueryPluginOptions = {
   queryClientConfig: {
@@ -16,7 +16,7 @@ const vueQueryOptions: VueQueryPluginOptions = {
       },
     },
   },
-};
+}
 
-app.use(VueQueryPlugin, vueQueryOptions);
-app.mount("#app");
+app.use(VueQueryPlugin, vueQueryOptions)
+app.mount('#app')

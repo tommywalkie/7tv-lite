@@ -23,30 +23,30 @@
 
 <script setup lang="ts">
 interface Emote {
-  id: string;
-  name: string;
-  state: string;
-  trending: number;
+  id: string
+  name: string
+  state: string
+  trending: number
   owner: {
-    id: string;
-    username: string;
-    display_name: string;
+    id: string
+    username: string
+    display_name: string
     style: {
-      color: string;
-      paint_id: string;
-    };
-  };
-  flags: number;
+      color: string
+      paint_id: string
+    }
+  }
+  flags: number
   host: {
-    url: string;
+    url: string
     files: {
-      name: string;
-      format: string;
-      width: number;
-      height: number;
-    }[];
-  };
+      name: string
+      format: string
+      width: number
+      height: number
+    }[]
+  }
 }
 
-defineProps<{ emote: Emote }>();
+defineProps<{ emote: Emote }>()
 </script>

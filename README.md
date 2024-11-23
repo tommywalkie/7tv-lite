@@ -16,7 +16,7 @@ submitted on their Discord. One month later it was still not addressed.
 
 Then I discovered that their [GraphQL API](https://7tv.io/v3/gql/playground)
 still had a category for latest emotes, so I used it to make this simple
-client.
+client. Also I wanted to pick up Vue again after a long time.
 
 ## License
 

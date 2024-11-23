@@ -1,30 +1,30 @@
 <template>
   <div>
     <div class="p-4">
-      <div
-        class="w-full max-w-full w-full xs:w-full sm:w-full md:w-full lg:w-3xl xl:w-3xl mx-auto"
-      >
+      <div class="w-full max-w-full w-full xs:w-full sm:w-full md:w-full lg:w-3xl xl:w-3xl mx-auto">
         <div class="flex items-center space-x-2">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search emotes..."
-            class="w-full p-2 mb-2 border border-gray-700 focus:outline-none rounded bg-gray-800"
-          />
-          <select
-            v-model="sortOption"
-            class="ml-4 p-2 border border-gray-500 rounded mb-auto bg-gray-700"
-          >
+          <div class="w-full relative">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search emotes..."
+              class="w-full p-2 mb-2 border border-gray-700 focus:outline-none rounded bg-gray-800 pr-15"
+            />
+            <button
+              class="absolute right-0 my-auto p-2 bg-transparent opacity-50 outline-none border-none"
+              @click="searchQuery = ''"
+            >
+              &times;
+            </button>
+          </div>
+
+          <select v-model="sortOption" class="ml-4 p-2 border border-gray-500 rounded mb-auto bg-gray-700">
             <option value="created_at">New</option>
             <option value="popularity">Top</option>
           </select>
         </div>
         <label class="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            v-model="isExactSearch"
-            class="form-checkbox"
-          />
+          <input type="checkbox" v-model="isExactSearch" class="form-checkbox" />
           <span class="text-sm text-gray-400">Exact Search</span>
         </label>
       </div>
@@ -51,121 +51,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useQuery } from "@tanstack/vue-query";
-import debounce from "lodash.debounce";
-import EmoteSkeleton from "./EmoteSkeleton.vue";
-import EmoteCard from "./EmoteCard.vue";
-import Pagination from "./Pagination.vue";
-
-const SEARCH_EMOTES_QUERY = `
-  query SearchEmotes($query: String!, $page: Int, $limit: Int, $filter: EmoteSearchFilter) {
-    emotes(query: $query, page: $page, limit: $limit, filter: $filter) {
-      count
-      max_page
-      items {
-        id
-        name
-        state
-        trending
-        owner {
-          id
-          username
-          display_name
-          style {
-            color
-            paint_id
-          }
-        }
-        flags
-        host {
-          url
-          files {
-            name
-            format
-            width
-            height
-          }
-        }
-      }
-    }
-  }
-`;
-
-const currentPage = ref(1);
-const totalPages = ref(1);
-const searchQuery = ref("");
-const debouncedSearchQuery = ref("");
-const isExactSearch = ref(false);
-const sortOption = ref("created_at");
+import { useEmotes } from '../hooks/useEmotes'
+import EmoteSkeleton from './EmoteSkeleton.vue'
+import EmoteCard from './EmoteCard.vue'
+import Pagination from './Pagination.vue'
 
 const {
-  data: emotes,
-  refetch,
+  emotes,
   isFetching,
-} = useQuery({
-  queryKey: [
-    "emotes",
-    currentPage,
-    debouncedSearchQuery,
-    isExactSearch,
-    sortOption,
-  ],
-  queryFn: async ({ queryKey }) => {
-    const [_key, page, search, exact_match, sortValue] = queryKey;
-    const category =
-      sortValue === "popularity"
-        ? "TOP"
-        : sortValue === "created_at"
-        ? "NEW"
-        : undefined;
-    const filter = {
-      ...(category && { category }),
-      exact_match,
-      ignore_tags: false,
-      zero_width: false,
-      animated: false,
-      aspect_ratio: "",
-    };
-    const response = await fetch("https://7tv.io/v3/gql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: SEARCH_EMOTES_QUERY,
-        variables: {
-          query: search,
-          page,
-          limit: 20,
-          filter,
-        },
-      }),
-    });
-
-    const { data } = await response.json();
-    totalPages.value = data.emotes.max_page;
-    return data.emotes.items;
-  },
-});
-
-const updateDebouncedQuery = debounce((newQuery: string) => {
-  debouncedSearchQuery.value = newQuery;
-  currentPage.value = 1;
-  refetch();
-}, 300);
-
-watch(searchQuery, (newQuery) => {
-  updateDebouncedQuery(newQuery);
-});
-
-const goToPage = (page: number) => {
-  if (page > 0 && page <= totalPages.value) {
-    currentPage.value = page;
-    refetch();
-  }
-};
-
-const nextPage = () => goToPage(currentPage.value + 1);
-const prevPage = () => goToPage(currentPage.value - 1);
+  currentPage,
+  totalPages,
+  searchQuery,
+  isExactSearch,
+  sortOption,
+  goToPage,
+  nextPage,
+  prevPage,
+} = useEmotes()
 </script>
