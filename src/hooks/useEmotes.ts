@@ -59,11 +59,10 @@ export function useEmotes() {
     queryKey: ['emotes', currentPage, debouncedSearchQuery, isExactSearch, category, zeroWidth, animated, ignoreTags],
     queryFn: async ({ queryKey }) => {
       const [_key, page, search, exact_match, category, zeroWidth, animated, ignoreTags] = queryKey
-      const sortField = category === 'TRENDING_DAY' || category === 'TOP' ? 'popularity' : 'created_at'
       const filter = {
         ...(category && { category }),
         exact_match,
-        ignore_tags: false,
+        ignore_tags: ignoreTags,
         zero_width: zeroWidth,
         animated: animated,
         aspect_ratio: '',

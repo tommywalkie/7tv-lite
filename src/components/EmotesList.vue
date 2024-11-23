@@ -35,7 +35,7 @@
           </label>
           <label class="flex items-center space-x-2">
             <input type="checkbox" v-model="animated" class="form-checkbox" />
-            <span class="text-sm text-gray-400">Animated</span>
+            <span class="text-sm text-gray-400">Animated Only</span>
           </label>
           <label class="flex items-center space-x-2">
             <input type="checkbox" v-model="ignoreTags" class="form-checkbox" />

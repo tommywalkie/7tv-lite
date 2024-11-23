@@ -4,7 +4,7 @@
       :key="emote.id"
       :class="[
         'flex flex-col items-center bg-gray-800 rounded-lg m-auto h-35 justify-center p-3 hover:bg-gray-700 focus:bg-gray-800 transition-colors duration-100 relative',
-        { 'border-1 border-yellow-500': isZeroWidth },
+        { 'border-2 border-yellow-500': isZeroWidth },
       ]"
     >
       <div class="max-w-full my-auto">
