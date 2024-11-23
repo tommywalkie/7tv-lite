@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "prettier": "prettier --write ."
   },
@@ -23,6 +23,6 @@
     "typescript": "~5.7.2",
     "vite": "^5.4.10",
     "vite-plugin-windicss": "^1.9.3",
-    "vue-tsc": "^2.1.8"
+    "vue-tsc": "^2.1.10"
   }
 }
