@@ -10,7 +10,7 @@
       </p>
     </div>
     <div>
-      <EmotesList />
+      <RouterView />
     </div>
     <div class="flex flex-col sm:flex-row items-center mt-8 gap-4 sm:gap-2 justify-center">
       <p>
@@ -27,9 +27,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import EmotesList from './components/EmotesList.vue'
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 /* Add any additional styles here if needed */

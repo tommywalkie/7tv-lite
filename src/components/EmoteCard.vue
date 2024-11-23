@@ -2,7 +2,10 @@
   <a :href="`https://7tv.app/emotes/${emote.id}`" target="_blank">
     <div
       :key="emote.id"
-      class="flex flex-col items-center bg-gray-800 rounded-lg m-auto h-35 justify-center p-3 hover:bg-gray-700 focus:bg-gray-800 transition-colors duration-100"
+      :class="[
+        'flex flex-col items-center bg-gray-800 rounded-lg m-auto h-35 justify-center p-3 hover:bg-gray-700 focus:bg-gray-800 transition-colors duration-100 relative',
+        { 'border-1 border-yellow-500': isZeroWidth },
+      ]"
     >
       <div class="max-w-full my-auto">
         <img
@@ -17,11 +20,30 @@
           {{ emote.owner.username }}
         </p>
       </div>
+      <div v-if="isZeroWidth" class="absolute top-2 -left-2">
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fass"
+          data-icon="object-group"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 576 512"
+          class="w-5 h-5"
+        >
+          <path
+            class="fill-yellow-500"
+            d="M0 128V64 0H64h64V32H448V0h64 64V64v64H544V384h32v64 64H512 448V480H128v32H64 0V448 384H32V128H0zM96 416H480V96H96V416zm32-288H320V288H128V128zM256 320h64 32V288 224h96V384H256V320z"
+          ></path>
+        </svg>
+      </div>
     </div>
   </a>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 interface Emote {
   id: string
   name: string
@@ -48,5 +70,7 @@ interface Emote {
   }
 }
 
-defineProps<{ emote: Emote }>()
+const props = defineProps<{ emote: Emote }>()
+
+const isZeroWidth = computed(() => typeof props.emote?.flags === 'number' && props.emote.flags === 256)
 </script>

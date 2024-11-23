@@ -10,12 +10,7 @@
 }
 
 a {
-  font-weight: 500;
-  color: #4fb1d4;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #2c6b81;
+  @apply font-medium text-primary-500 no-underline hover:text-primary-600;
 }
 
 body {
@@ -48,10 +43,6 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
 }
 
 #app {
