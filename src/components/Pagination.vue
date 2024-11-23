@@ -39,7 +39,7 @@
       Next
     </button>
   </div>
-  <div class="flex justify-center mt-4 gap-2 sm:hidden">
+  <div class="flex justify-center mt-4 gap-1.5 sm:hidden text-sm">
     <button
       @click="prevPage"
       :disabled="currentPage === 1 || disabled"

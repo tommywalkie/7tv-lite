@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="p-0 sm:p-8 pt-5 sm:pt-8">
     <div class="flex flex-col items-center">
       <img src="/logo.svg" alt="7TV Lite" class="w-24 h-24 mb-5" />
       <h1 class="text-2xl font-bold text-center">7TV Lite</h1>
@@ -12,13 +12,13 @@
     <div>
       <EmotesList />
     </div>
-    <div class="flex items-center mt-8 gap-2 justify-center">
+    <div class="flex flex-col sm:flex-row items-center mt-8 gap-4 sm:gap-2 justify-center">
       <p>
         <a href="https://github.com/tommywalkie/7tv-lite" target="_blank" rel="noopener noreferrer"
-          ><img src="/github.svg" alt="Source" class="w-5 h-5 inline-block mr-1 align-sub" /> Source</a
+          ><img src="/github.svg" alt="Source" class="w-5 h-5 inline-block mr-1 align-sub text-nowrap" />&nbsp;Source</a
         >
       </p>
-      <span class="text-gray-400">✦</span>
+      <span class="text-gray-400 hidden sm:block">✦</span>
       <p class="text-center text-gray-400">
         Made with ❤️ by
         <a href="https://github.com/tommywalkie" target="_blank" rel="noopener noreferrer">tommywalkie</a>
