@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'px-4 py-2 text-white rounded',
+      'px-4 py-2 text-white rounded select-none',
       {
         'bg-gray-400 dark:bg-gray-700 hover:bg-primary-600': !isActive,
         'bg-primary': isActive,
