@@ -16,7 +16,7 @@
       >
         {{ page.index }}
       </Button>
-      <span v-else class="px-2 py-2 text-white">...</span>
+      <span v-else class="px-2 py-2 text-gray-600 dark:text-gray-400">...</span>
     </template>
     <Button
       @click="nextPage"
@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import Button from '../Button.vue'
+import Button from './Button.vue'
 
 const props = defineProps<{
   currentPage: number

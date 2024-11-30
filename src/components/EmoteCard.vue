@@ -3,7 +3,7 @@
     <div
       :key="emote.id"
       :class="[
-        'flex flex-col items-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-800 dark:focus:bg-gray-700 rounded-lg m-auto h-35 justify-center p-3 transition-colors duration-100 relative',
+        'flex flex-col items-center bg-gray-200 dark:bg-secondary-400 hover:bg-gray-300 dark:hover:bg-secondary-200 rounded-lg m-auto h-35 justify-center p-3 relative',
         { 'border-2 border-yellow-500': isZeroWidth },
       ]"
     >

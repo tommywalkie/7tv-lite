@@ -8,6 +8,9 @@ dependencies:
   '@tanstack/vue-query':
     specifier: ^5.60.6
     version: 5.60.6(vue@3.5.13)
+  liwan-tracker:
+    specifier: 0.1.0-beta.2
+    version: 0.1.0-beta.2
   lodash.debounce:
     specifier: ^4.0.8
     version: 4.0.8
@@ -789,6 +792,10 @@ packages:
   /kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
     dev: true
+
+  /liwan-tracker@0.1.0-beta.2:
+    resolution: {integrity: sha512-mkRkHREISPyeqhCk6hao2yBANjyW+ZLkkOdk8GUtz5EEw0U3Rw2DATxDnb19COgg04lQWm/Un3dbZkqqQhkQ1A==}
+    dev: false
 
   /lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}

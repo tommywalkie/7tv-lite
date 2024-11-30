@@ -14,7 +14,7 @@ export default defineConfig({
     vue(),
     WindiCSS({
       config: {
-        darkMode: 'media',
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
@@ -31,6 +31,19 @@ export default defineConfig({
                 700: '#2c6b81',
                 800: '#1e4b5b',
                 900: '#0f2b35',
+              },
+              secondary: {
+                DEFAULT: '#121212',
+                50: '#808080',
+                100: '#666666',
+                200: '#4d4d4d',
+                300: '#333333',
+                400: '#1f1f1f',
+                500: '#121212',
+                600: '#0f0f0f',
+                700: '#0c0c0c',
+                800: '#090909',
+                900: '#060606',
               },
             },
           },

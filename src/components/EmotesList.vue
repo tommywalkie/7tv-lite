@@ -8,7 +8,7 @@
               v-model="searchQuery"
               type="text"
               placeholder="Search emotes..."
-              class="w-full p-2 mb-2 border border-gray-700 focus:outline-none rounded bg-gray-200 dark:bg-gray-800 pr-15"
+              class="w-full p-2 mb-2 border border-gray-700 focus:outline-none rounded bg-gray-200 dark:bg-secondary-400 dark:border-secondary-500"
             />
             <button
               class="absolute right-0 bottom-2 top-0 px-3 bg-transparent opacity-50 outline-none border-none text-gray-700 dark:text-gray-400"
@@ -18,14 +18,26 @@
             </button>
           </div>
 
-          <select
-            v-model="category"
-            class="ml-4 p-2 border border-gray-500 rounded mb-auto bg-gray-300 dark:bg-gray-700"
-          >
-            <option value="NEW">Latest</option>
-            <option value="TOP">Top</option>
-            <option value="TRENDING_DAY">Trending</option>
-          </select>
+          <div class="ml-4 flex items-center space-x-2 mb-2">
+            <select
+              v-model="category"
+              class="p-2 border border-gray-400 rounded mb-auto bg-gray-300 dark:bg-secondary-400 dark:border-secondary-200"
+            >
+              <option value="NEW">Latest</option>
+              <option value="TOP">Top</option>
+              <option value="TRENDING_DAY">Trending</option>
+            </select>
+            <select
+              v-model="limit"
+              class="p-2 border border-gray-400 rounded mb-auto bg-gray-300 dark:bg-secondary-400 dark:border-secondary-200"
+            >
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+            </select>
+          </div>
         </div>
         <div class="grid grid-cols-2 items-center sm:space-x-2 sm:flex sm:flex-row">
           <label class="flex items-center space-x-2">
@@ -57,14 +69,16 @@
         <EmoteCard :emote="emote" />
       </template>
     </div>
-    <Pagination
-      :currentPage="currentPage"
-      :totalPages="totalPages"
-      @goToPage="goToPage"
-      @nextPage="nextPage"
-      @prevPage="prevPage"
-      :disabled="isFetching"
-    />
+    <div class="flex justify-center mb-4">
+      <Pagination
+        :currentPage="currentPage"
+        :totalPages="totalPages"
+        @goToPage="goToPage"
+        @nextPage="nextPage"
+        @prevPage="prevPage"
+        :disabled="isFetching"
+      />
+    </div>
   </div>
 </template>
 
@@ -74,7 +88,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useEmotes } from '../hooks/useEmotes'
 import EmoteSkeleton from './EmoteSkeleton.vue'
 import EmoteCard from './EmoteCard.vue'
-import Pagination from './Pagination/Pagination.vue'
+import Pagination from './Pagination.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -93,6 +107,7 @@ const {
   goToPage,
   nextPage,
   prevPage,
+  limit,
 } = useEmotes()
 
 // Initialize searchQuery from URL

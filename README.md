@@ -2,6 +2,8 @@
 
 Lightweight client for browsing the latest [7TV](https://7tv.app/) emotes.
 
+🌐 [Try it out](https://7tv-lite.tommywalkie.com/?ref=github)
+
 Based on Vue 3, Tanstack Query, and WindiCSS.
 
 ## Context
