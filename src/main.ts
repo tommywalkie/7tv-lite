@@ -9,7 +9,8 @@ import Home from './routes/Home.vue'
 import Privacy from './routes/Privacy.vue'
 
 const isProd = import.meta.env.PROD
-if (isProd) {
+
+if (isProd && window.location.hostname === '7tv-lite.tommywalkie.com') {
   injectLiwanScript('7tv-lite')
 }
 
