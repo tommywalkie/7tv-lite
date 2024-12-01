@@ -7,7 +7,7 @@
     <div class="flex items-center justify-between">
       <a href="/" class="flex items-center gap-2">
         <img src="/logo.svg" alt="7TV Lite" class="w-6 h-6" />
-        <span class="text-sm font-bold text-gray-800 dark:text-gray-200">7TV Lite</span>
+        <span class="text-md font-bold text-gray-800 dark:text-gray-200">7TV Lite</span>
       </a>
       <DarkModeToggle variant="sm" />
     </div>

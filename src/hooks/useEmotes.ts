@@ -162,7 +162,10 @@ export function useEmotes() {
 
   watch(
     [category, limit, zeroWidth, animatedOnly, ignoreTags, isExactSearch],
-    ([newCategory, newLimit, newZeroWidth, newAnimated, newIgnoreTags, newExact]) => {
+    ([newCategory, newLimit, newZeroWidth, newAnimated, newIgnoreTags, newExact], [, oldLimit]) => {
+      if (newLimit !== oldLimit) {
+        currentPage.value = 1
+      }
       updateQueryParams({
         category: newCategory,
         limit: newLimit === DEFAULT_LIMIT ? undefined : newLimit,

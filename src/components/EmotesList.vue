@@ -4,7 +4,7 @@
       class="p-4 sticky bg-gray-200 dark:bg-secondary-500 z-10"
       :class="{ 'top-10': showMinifiedHeader, 'top-0': !showMinifiedHeader }"
     >
-      <div class="w-full max-w-full w-full xs:w-full sm:w-full md:w-full lg:w-3xl xl:w-3xl mx-auto">
+      <div class="w-full max-w-full w-full xs:w-full sm:w-xl md:w-2xl lg:w-3xl xl:w-3xl mx-auto">
         <div class="flex items-center space-x-2">
           <ClearableInput
             v-model="searchQuery"
@@ -34,6 +34,7 @@
               v-model="limit"
               variant="sm"
               :options="[
+                { value: '6', label: '6' },
                 { value: '10', label: '10' },
                 { value: '20', label: '20' },
                 { value: '30', label: '30' },
