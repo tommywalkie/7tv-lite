@@ -30,20 +30,6 @@
       </div>
     </div>
 
-    <div
-      v-if="route.name === 'home'"
-      class="flex justify-center sticky bottom-0 w-full bg-gray-200 dark:bg-secondary py-2 pb-6"
-    >
-      <Pagination
-        :currentPage="currentPage"
-        :totalPages="totalPages"
-        @goToPage="goToPage"
-        @nextPage="nextPage"
-        @prevPage="prevPage"
-        :disabled="isFetching"
-      />
-    </div>
-
     <!-- Footer -->
     <footer class="w-full py-4 mt-auto bg-gray-200 dark:bg-secondary-400 text-gray-800 dark:text-gray-200">
       <div class="max-w-7xl mx-auto px-4">
@@ -83,15 +69,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useEmotes } from './hooks/useEmotes'
-import { useRoute } from 'vue-router'
-import Pagination from './components/Pagination.vue'
 import DarkModeToggle from './components/DarkModeToggle.vue'
 import MinifiedHeader from './components/MinifiedHeader.vue'
-
-const route = useRoute()
-const emotesState = useEmotes()
-const { isFetching, currentPage, totalPages, goToPage, nextPage, prevPage } = emotesState
 
 const headerObserverTarget = ref<HTMLElement | null>(null)
 const showMinifiedHeader = ref(false)

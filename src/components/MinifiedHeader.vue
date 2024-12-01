@@ -1,7 +1,7 @@
 <template>
   <div
     v-show="show"
-    class="px-4 pt-3 h-12 sticky z-10 top-0 bg-gray-200 dark:bg-secondary-500 z-10 transition-opacity duration-200"
+    class="px-4 pt-3 h-12 sticky z-10 top-0 bg-gray-100 dark:bg-secondary-500 z-10 transition-opacity duration-200"
     :class="{ 'opacity-0': !show, 'opacity-100': show }"
   >
     <div class="flex items-center justify-between">

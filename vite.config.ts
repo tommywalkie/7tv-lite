@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import WindiCSS from 'vite-plugin-windicss'
+import typedGraphQL from 'vite-plugin-typed-graphql'
 import { resolve } from 'node:path'
 
 // https://vitejs.dev/config/
@@ -12,6 +13,16 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    typedGraphQL({
+      schemaPath: resolve(__dirname, 'src/graphql/schema.gql'),
+      scalars: {
+        ObjectID: 'string',
+        EmoteVersionState: {
+          input: 'string',
+          output: 'string',
+        },
+      },
+    }),
     WindiCSS({
       config: {
         darkMode: 'class',

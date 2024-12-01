@@ -5,7 +5,7 @@
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       type="text"
       :placeholder="placeholder"
-      class="w-full p-2 pr-7 border rounded-md transition-colors bg-gray-200 dark:bg-secondary-400 border-gray-700 dark:border-secondary-500 focus:outline-none focus:border-primary-500 dark:focus:border-primary-400"
+      class="w-full p-2 pr-7 border rounded-md transition-colors bg-gray-200 dark:bg-secondary-400 border-gray-400 dark:border-secondary-500 focus:outline-none focus:border-primary-500 dark:focus:border-primary-400"
     />
     <button
       class="absolute z-10 right-0 h-full px-2.5 bg-transparent opacity-50 hover:opacity-75 outline-none border-none text-gray-700 dark:text-gray-400 text-lg leading-5"

@@ -1,47 +1,27 @@
 <template>
   <div class="max-w-3xl mx-auto px-4 py-8 text-left">
-    <a
-      href="/"
-      class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 inline-flex items-center bg-transparent hover:bg-gray-200 dark:hover:bg-secondary-400 rounded-md p-2 -ml-2"
-    >
-      <svg
-        width="1.2em"
-        height="1.2em"
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 32 32"
-        class="mr-3"
-        data-v-2b8faf6c=""
-      >
-        <path fill="currentColor" d="m14 26l1.41-1.41L7.83 17H28v-2H7.83l7.58-7.59L14 6L4 16l10 10z"></path>
-      </svg>
-      Return to home
-    </a>
+    <ReturnHome />
 
     <h1 class="text-2xl font-bold mb-6 mt-4">Privacy Policy</h1>
 
     <section class="mb-8">
       <h2 class="text-xl font-semibold mb-4">Overview</h2>
       <p class="mb-4">
-        This privacy policy explains how we handle your data when you use our service, that is currently hosted at:
+        This privacy policy explains how we handle your data when you use our service, that is currently hosted at
+        <a href="https://7tv-lite.tommywalkie.com" target="_blank" rel="noopener noreferrer"
+          >7tv-lite.tommywalkie.com</a
+        >
       </p>
-      <ul class="list-disc pl-6 mb-4">
-        <li>
-          <a href="https://7tv-lite.tommywalkie.com" target="_blank" rel="noopener noreferrer"
-            >7tv-lite.tommywalkie.com</a
-          >
-        </li>
-        <li>
-          <a href="https://7tv-lite.vercel.app" target="_blank" rel="noopener noreferrer">7tv-lite.vercel.app</a>
-        </li>
-      </ul>
     </section>
 
     <section class="mb-8">
       <h2 class="text-xl font-semibold mb-4">Analytics</h2>
       <p class="mb-4">
-        We use Liwan, a privacy-focused analytics service hosted at
-        <a href="https://liwan.tommywalkie.com" target="_blank" rel="noopener noreferrer">liwan.tommywalkie.com</a>, to
-        collect anonymous usage data.
+        We use Liwan, a privacy-focused analytics service hosted on our server, to collect anonymous usage data. The
+        data is publicly available and
+        <a href="https://liwan.tommywalkie.com/p/7tv-lite" target="_blank" rel="noopener noreferrer"
+          >can be viewed here</a
+        >.
       </p>
       <h3 class="text-lg font-semibold mb-2">What we collect:</h3>
       <ul class="list-disc pl-6 mb-4">
@@ -88,3 +68,12 @@
     </section>
   </div>
 </template>
+
+<script setup lang="ts">
+import ReturnHome from '../components/ReturnHome.vue'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Privacy Policy - 7TV Lite',
+})
+</script>

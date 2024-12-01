@@ -2,40 +2,7 @@ import { ref, watch, provide, inject, type InjectionKey } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import debounce from 'lodash.debounce'
 import { useRoute, useRouter } from 'vue-router'
-
-const SEARCH_EMOTES_QUERY = `
-    query SearchEmotes($query: String!, $page: Int, $limit: Int, $filter: EmoteSearchFilter) {
-      emotes(query: $query, page: $page, limit: $limit, filter: $filter) {
-        count
-        max_page
-        items {
-          id
-          name
-          state
-          trending
-          owner {
-            id
-            username
-            display_name
-            style {
-              color
-              paint_id
-            }
-          }
-          flags
-          host {
-            url
-            files {
-              name
-              format
-              width
-              height
-            }
-          }
-        }
-      }
-    }
-  `
+import SEARCH_EMOTES_QUERY from '../hooks/queries/GetEmotes'
 
 type Category = 'NEW' | 'TOP' | 'TRENDING_DAY'
 
@@ -65,7 +32,6 @@ const QUERY_PARAMS = {
   },
 } as const
 
-// Create a symbol for injection key
 export const EmotesKey = Symbol() as InjectionKey<ReturnType<typeof useEmotes>>
 
 export function useEmotes() {
@@ -83,12 +49,29 @@ export function useEmotes() {
   const ignoreTags = ref(false)
   const limit = ref<number>(QUERY_PARAMS.limit.default)
 
-  // Initialize state from URL once
   if (route.query.page) {
     currentPage.value = parseInt(route.query.page as string) || 1
   }
   if (route.query.query) {
     searchQuery.value = Array.isArray(route.query.query) ? route.query.query[0] || '' : route.query.query || ''
+  }
+  if (route.query.limit) {
+    limit.value = parseInt(route.query.limit as string) || DEFAULT_LIMIT
+  }
+  if (route.query.category) {
+    category.value = (route.query.category as Category) || DEFAULT_CATEGORY
+  }
+  if (route.query.exact) {
+    isExactSearch.value = route.query.exact === 'true'
+  }
+  if (route.query.zeroWidth) {
+    zeroWidth.value = route.query.zeroWidth === 'true'
+  }
+  if (route.query.animated) {
+    animatedOnly.value = route.query.animated === 'true'
+  }
+  if (route.query.ignoreTags) {
+    ignoreTags.value = route.query.ignoreTags === 'true'
   }
 
   const {
@@ -187,7 +170,6 @@ export function useEmotes() {
   const nextPage = () => goToPage(currentPage.value + 1)
   const prevPage = () => goToPage(currentPage.value - 1)
 
-  // Helper to update URL without multiple router.replace calls
   const updateQueryParams = (updates: Record<string, any>) => {
     const newQuery = { ...route.query }
 
@@ -197,7 +179,6 @@ export function useEmotes() {
         value === QUERY_PARAMS[key as keyof typeof QUERY_PARAMS]?.default ||
         (key === 'limit' && Number(value) === DEFAULT_LIMIT)
       ) {
-        // Convert to number for comparison
         delete newQuery[key]
       } else {
         newQuery[key] = value.toString()
@@ -223,16 +204,15 @@ export function useEmotes() {
     nextPage,
     prevPage,
     clearSearch,
+    refetch,
   }
 
-  // Provide the state if it hasn't been provided yet
   provide(EmotesKey, emotesState)
 
   return emotesState
 }
 
-// Add a consumer hook
-export function useEmotesState() {
+export function useEmotesStore() {
   const state = inject(EmotesKey)
   if (!state) {
     throw new Error('useEmotesState must be used within a component that has called useEmotes')

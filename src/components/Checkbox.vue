@@ -7,13 +7,15 @@
         type="checkbox"
         class="sr-only"
         :checked="modelValue"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
         @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
       />
       <div
         class="w-5 h-5 border-2 rounded-md border-gray-400 dark:border-gray-600 bg-white dark:bg-secondary-400 transition-colors"
         :class="{
-          'border-primary-500 dark:border-primary-400': modelValue,
           'hover:border-gray-500 dark:hover:border-gray-500': !modelValue,
+          'border-primary-500 dark:border-primary-400': isFocused,
         }"
       >
         <svg
@@ -34,6 +36,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
+const isFocused = ref(false)
 defineProps<{
   modelValue: boolean
 }>()

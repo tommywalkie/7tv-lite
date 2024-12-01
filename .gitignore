@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# GraphQL
+src/graphql
+*.gql.d.ts
