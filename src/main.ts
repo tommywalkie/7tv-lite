@@ -21,10 +21,12 @@ const router = createRouter({
     {
       path: '/',
       component: Home,
+      name: 'home',
     },
     {
       path: '/privacy',
       component: Privacy,
+      name: 'privacy',
     },
   ],
 })

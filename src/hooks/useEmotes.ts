@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref, watch, provide, inject, type InjectionKey } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import debounce from 'lodash.debounce'
 import { useRoute, useRouter } from 'vue-router'
@@ -42,20 +42,54 @@ type Category = 'NEW' | 'TOP' | 'TRENDING_DAY'
 const DEFAULT_LIMIT = 20
 const DEFAULT_CATEGORY: Category = 'NEW'
 
+const QUERY_PARAMS = {
+  page: {
+    key: 'page',
+    default: 1,
+    transform: (val: string) => parseInt(val) || 1,
+  },
+  limit: {
+    key: 'limit',
+    default: DEFAULT_LIMIT,
+    transform: (val: string) => Number(val) || DEFAULT_LIMIT,
+  },
+  category: {
+    key: 'category',
+    default: DEFAULT_CATEGORY as Category,
+    transform: (val: string) => (val as Category) || DEFAULT_CATEGORY,
+  },
+  query: {
+    key: 'query',
+    default: '',
+    transform: (val: string | string[]) => (Array.isArray(val) ? val[0] || '' : val || ''),
+  },
+} as const
+
+// Create a symbol for injection key
+export const EmotesKey = Symbol() as InjectionKey<ReturnType<typeof useEmotes>>
+
 export function useEmotes() {
   const route = useRoute()
   const router = useRouter()
 
-  const currentPage = ref(parseInt(route.query.page as string) || 1)
-  const totalPages = ref(1)
-  const searchQuery = ref(Array.isArray(route.query.query) ? route.query.query[0] || '' : route.query.query || '')
-  const debouncedSearchQuery = ref(searchQuery.value)
+  const currentPage = ref<number>(QUERY_PARAMS.page.default)
+  const totalPages = ref<number>(1)
+  const searchQuery = ref<string>(QUERY_PARAMS.query.default)
+  const debouncedSearchQuery = ref<string>(searchQuery.value)
   const isExactSearch = ref(false)
-  const category = ref<Category>((route.query.category as Category) || DEFAULT_CATEGORY)
+  const category = ref<Category>(QUERY_PARAMS.category.default)
   const zeroWidth = ref(false)
-  const animated = ref(false)
+  const animatedOnly = ref(false)
   const ignoreTags = ref(false)
-  const limit = ref<number>(Number(route.query.limit) || DEFAULT_LIMIT)
+  const limit = ref<number>(QUERY_PARAMS.limit.default)
+
+  // Initialize state from URL once
+  if (route.query.page) {
+    currentPage.value = parseInt(route.query.page as string) || 1
+  }
+  if (route.query.query) {
+    searchQuery.value = Array.isArray(route.query.query) ? route.query.query[0] || '' : route.query.query || ''
+  }
 
   const {
     data: emotes,
@@ -69,7 +103,7 @@ export function useEmotes() {
       isExactSearch,
       category,
       zeroWidth,
-      animated,
+      animatedOnly,
       ignoreTags,
       limit,
     ],
@@ -111,34 +145,34 @@ export function useEmotes() {
   const updateDebouncedQuery = debounce((newQuery: string) => {
     debouncedSearchQuery.value = newQuery
     currentPage.value = 1
-    refetch()
   }, 300)
+
+  const clearSearch = () => {
+    searchQuery.value = ''
+  }
 
   watch(searchQuery, (newQuery) => {
     updateDebouncedQuery(newQuery)
-    router.replace({ query: { ...route.query, query: newQuery || undefined } })
+    updateQueryParams({ query: newQuery || undefined })
   })
 
   watch(currentPage, (newPage) => {
-    router.replace({ query: { ...route.query, page: newPage.toString() } })
+    updateQueryParams({ page: newPage.toString() })
   })
 
-  watch(limit, (newLimit) => {
-    if (Number.isNaN(newLimit) || Number(newLimit) % 1 !== 0) {
-      return
-    }
-    if (Number(newLimit) !== DEFAULT_LIMIT) {
-      router.replace({ query: { ...route.query, limit: newLimit.toString() } })
-    } else {
-      const newQuery = { ...route.query }
-      delete newQuery.limit
-      router.replace({ query: newQuery })
-    }
-  })
-
-  watch(category, (newCategory) => {
-    router.replace({ query: { ...route.query, category: newCategory } })
-  })
+  watch(
+    [category, limit, zeroWidth, animatedOnly, ignoreTags, isExactSearch],
+    ([newCategory, newLimit, newZeroWidth, newAnimated, newIgnoreTags, newExact]) => {
+      updateQueryParams({
+        category: newCategory,
+        limit: newLimit === DEFAULT_LIMIT ? undefined : newLimit,
+        zeroWidth: newZeroWidth || undefined,
+        animated: newAnimated || undefined,
+        ignoreTags: newIgnoreTags || undefined,
+        exact: newExact || undefined,
+      })
+    },
+  )
 
   const goToPage = (page: number) => {
     if (page > 0 && page <= totalPages.value) {
@@ -150,7 +184,27 @@ export function useEmotes() {
   const nextPage = () => goToPage(currentPage.value + 1)
   const prevPage = () => goToPage(currentPage.value - 1)
 
-  return {
+  // Helper to update URL without multiple router.replace calls
+  const updateQueryParams = (updates: Record<string, any>) => {
+    const newQuery = { ...route.query }
+
+    Object.entries(updates).forEach(([key, value]) => {
+      if (
+        value === undefined ||
+        value === QUERY_PARAMS[key as keyof typeof QUERY_PARAMS]?.default ||
+        (key === 'limit' && Number(value) === DEFAULT_LIMIT)
+      ) {
+        // Convert to number for comparison
+        delete newQuery[key]
+      } else {
+        newQuery[key] = value.toString()
+      }
+    })
+
+    router.replace({ query: newQuery })
+  }
+
+  const emotesState = {
     emotes,
     isFetching,
     currentPage,
@@ -159,11 +213,26 @@ export function useEmotes() {
     isExactSearch,
     category,
     zeroWidth,
-    animated,
+    animated: animatedOnly,
     ignoreTags,
     limit,
     goToPage,
     nextPage,
     prevPage,
+    clearSearch,
   }
+
+  // Provide the state if it hasn't been provided yet
+  provide(EmotesKey, emotesState)
+
+  return emotesState
+}
+
+// Add a consumer hook
+export function useEmotesState() {
+  const state = inject(EmotesKey)
+  if (!state) {
+    throw new Error('useEmotesState must be used within a component that has called useEmotes')
+  }
+  return state
 }

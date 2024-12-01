@@ -1,27 +1,36 @@
 <template>
-  <div class="flex justify-center mt-4 gap-2">
+  <div class="flex justify-center mt-4 gap-3">
     <Button
       @click="prevPage"
       :disabled="currentPage === 1 || disabled"
-      :customClass="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''"
+      :customClass="
+        ['text-sm sm:text-base px-3 sm:px-4', currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''].join(' ')
+      "
     >
       Prev
     </Button>
     <template v-for="page in visiblePages" :key="page.index || 'ellipsis'">
       <Button
         v-if="!page.isEllipsis"
-        @click="typeof page.index === 'number' && goToPage(page.index)"
+        @click="typeof page.index === 'number' && page.index !== currentPage && goToPage(page.index)"
         :isActive="page.index === currentPage"
         :disabled="disabled"
+        :customClass="
+          ['text-sm sm:text-base px-3 sm:px-4', page.index === currentPage ? 'bg-primary' : 'hidden sm:block'].join(' ')
+        "
       >
         {{ page.index }}
       </Button>
-      <span v-else class="px-2 py-2 text-gray-600 dark:text-gray-400">...</span>
+      <span v-else class="px-2 py-2 text-gray-600 dark:text-gray-400 hidden sm:block">...</span>
     </template>
     <Button
       @click="nextPage"
       :disabled="currentPage === totalPages || disabled"
-      :customClass="currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''"
+      :customClass="
+        ['text-sm sm:text-base px-3 sm:px-4', currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''].join(
+          ' ',
+        )
+      "
     >
       Next
     </Button>
