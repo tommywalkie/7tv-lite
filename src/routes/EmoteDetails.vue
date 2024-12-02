@@ -54,7 +54,6 @@
 </template>
 
 <script setup lang="ts">
-import ReturnHome from '../components/ReturnHome.vue'
 import { useQuery } from '@tanstack/vue-query'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
