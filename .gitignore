@@ -24,5 +24,6 @@ dist-ssr
 *.sw?
 
 # GraphQL
-src/graphql
-*.gql.d.ts
+
+src/graphql/*.gql
+src/graphql/*.gql.d.ts
