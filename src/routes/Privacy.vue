@@ -8,9 +8,9 @@
       <h2 class="text-xl font-semibold mb-4">Overview</h2>
       <p class="mb-4">
         This privacy policy explains how we handle your data when you use our service, that is currently hosted at
-        <a href="https://7tv-lite.tommywalkie.com" target="_blank" rel="noopener noreferrer"
-          >7tv-lite.tommywalkie.com</a
-        >
+        <a href="https://7tv-lite.tommywalkie.com" target="_blank" rel="noopener noreferrer">
+          7tv-lite.tommywalkie.com</a
+        >.
       </p>
     </section>
 

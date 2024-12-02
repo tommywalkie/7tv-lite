@@ -8,6 +8,7 @@ export default `query GetEmote($id: ObjectID!) {
       username
       display_name
     }
+    tags
     host {
       url
       files {

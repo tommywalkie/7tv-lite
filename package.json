@@ -7,9 +7,11 @@
     "dev": "pnpm run build:graphql && pnpm run dev:vite",
     "dev:vite": "vite",
     "build": "pnpm run build:graphql && pnpm run build:ts && pnpm run build:vite",
-    "build:graphql": "get-graphql-schema https://7tv.io/v3/gql > ./src/graphql/schema.gql",
+    "build:graphql": "pnpm run build:graphql:sync && pnpm run build:graphql:declarations",
+    "build:graphql:sync": "mkdir -p ./src/graphql && get-graphql-schema https://7tv.io/v3/gql > ./src/graphql/schema.gql",
+    "build:graphql:declarations": "build-gql-declarations -s ./src/graphql/schema.gql",
     "build:vite": "vite build",
-    "build:ts": "vue-tsc -b",
+    "build:ts": "vue-tsc --noEmit --incremental false",
     "preview": "vite preview",
     "prettier": "prettier --write ."
   },

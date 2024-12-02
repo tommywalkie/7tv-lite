@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Emote } from 'src/graphql/schema.gql'
-import ZeroWidthIcon from './ZeroWidthIcon.vue'
+import ZeroWidthIcon from './icons/ZeroWidthIcon.vue'
 
 const props = defineProps<{ emote: Emote }>()
 

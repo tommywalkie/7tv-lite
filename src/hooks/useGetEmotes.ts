@@ -1,4 +1,4 @@
-import { ref, watch, provide, inject, type InjectionKey } from 'vue'
+import { ref, watch, provide, inject, type InjectionKey, onMounted } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import debounce from 'lodash.debounce'
 import { useRoute, useRouter } from 'vue-router'
@@ -123,6 +123,12 @@ export function useEmotes() {
       totalPages.value = data.emotes.max_page
       return data.emotes.items
     },
+  })
+
+  onMounted(() => {
+    if (searchQuery.value) {
+      debouncedSearchQuery.value = searchQuery.value
+    }
   })
 
   const updateDebouncedQuery = debounce((newQuery: string) => {

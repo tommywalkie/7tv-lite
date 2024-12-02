@@ -28,6 +28,9 @@ export default defineConfig({
         darkMode: 'class',
         theme: {
           extend: {
+            screens: {
+              xs: '480px',
+            },
             colors: {
               primary: {
                 DEFAULT: '#4fb1d4',

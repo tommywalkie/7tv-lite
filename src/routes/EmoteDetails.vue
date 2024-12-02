@@ -17,16 +17,16 @@
             :alt="`${emote.name} ${size}`"
             class="mb-2 mx-auto"
             :class="{
-              'max-h-8': size === '1x',
-              'max-h-16': size === '2x',
-              'max-h-24': size === '3x',
-              'max-h-32': size === '4x',
+              'max-h-4 sm:max-h-8': size === '1x',
+              'max-h-8 sm:max-h-16': size === '2x',
+              'max-h-16 sm:max-h-24': size === '3x',
+              'max-h-24 sm:max-h-32': size === '4x',
             }"
           />
           <span class="text-xs text-gray-600 dark:text-gray-400">
-            {{ emote.host.files[index].height }} x {{ emote.host.files[index].width }}
+            {{ emote.host.files[index].height }}&nbsp;x&nbsp;{{ emote.host.files[index].width }}
           </span>
-          <span class="text-xs text-gray-400 dark:text-gray-600">{{ size }}</span>
+          <span class="text-xs text-gray-400 dark:text-gray-500">{{ size }}</span>
         </div>
       </div>
 
@@ -44,8 +44,14 @@
         >
       </div>
 
+      <div class="flex justify-center gap-2 flex-wrap mb-8" v-if="emote.tags.length">
+        <a v-for="tag in emote.tags" :href="`/?query=${tag}`">
+          <Button customClass="text-sm px-2 py-1 bg-gray-500 dark:bg-secondary-200 mb-1">#{{ tag }}</Button>
+        </a>
+      </div>
+
       <a :href="`https://7tv.app/emotes/${emote.id}`" target="_blank">
-        <Button>View on 7TV</Button>
+        <Button customClass="mb-8">View on 7TV</Button>
       </a>
     </div>
 
@@ -61,7 +67,7 @@ import { useHead } from '@unhead/vue'
 import Button from '../components/Button.vue'
 import { Emote } from 'src/graphql/schema.gql'
 import GET_EMOTE_QUERY from '../hooks/queries/GetEmote'
-import ZeroWidthIcon from '../components/ZeroWidthIcon.vue'
+import ZeroWidthIcon from '../components/icons/ZeroWidthIcon.vue'
 const route = useRoute()
 const emoteId = computed(() => route.query.id as string)
 

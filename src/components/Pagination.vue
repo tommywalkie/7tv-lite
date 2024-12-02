@@ -1,10 +1,13 @@
 <template>
-  <div class="flex justify-center mt-4 gap-3">
+  <div class="flex justify-center mt-4 gap-1.8 sm:gap-3">
     <Button
       @click="prevPage"
       :disabled="currentPage === 1 || disabled"
       :customClass="
-        ['text-sm sm:text-base px-3 sm:px-4', currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''].join(' ')
+        [
+          'text-sm sm:text-base px-2 sm:px-4 hidden xs:block',
+          currentPage === 1 ? 'opacity-50 cursor-not-allowed' : '',
+        ].join(' ')
       "
     >
       Prev
@@ -15,21 +18,20 @@
         @click="typeof page.index === 'number' && page.index !== currentPage && goToPage(page.index)"
         :isActive="page.index === currentPage"
         :disabled="disabled"
-        :customClass="
-          ['text-sm sm:text-base px-3 sm:px-4', page.index === currentPage ? 'bg-primary' : 'hidden sm:block'].join(' ')
-        "
+        :customClass="['text-sm sm:text-base px-2.5 sm:px-4', page.index === currentPage ? 'bg-primary' : ''].join(' ')"
       >
         {{ page.index }}
       </Button>
-      <span v-else class="px-2 py-2 text-gray-600 dark:text-gray-400 hidden sm:block">...</span>
+      <span v-else class="px-0.5 sm:px-2 py-2 text-gray-600 dark:text-gray-400">...</span>
     </template>
     <Button
       @click="nextPage"
       :disabled="currentPage === totalPages || disabled"
       :customClass="
-        ['text-sm sm:text-base px-3 sm:px-4', currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''].join(
-          ' ',
-        )
+        [
+          'text-sm sm:text-base px-3 sm:px-4 hidden xs:block',
+          currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : '',
+        ].join(' ')
       "
     >
       Next

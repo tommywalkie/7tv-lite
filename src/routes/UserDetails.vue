@@ -10,10 +10,9 @@
           <div class="h-20 bg-gray-200 dark:bg-secondary-400 rounded-lg"></div>
         </div>
         <div v-else-if="user" class="flex items-center space-x-4 py-3">
-          <img :src="user.avatar_url" :alt="user.display_name" class="w-15 h-15 rounded-lg object-cover" />
+          <img :src="user.avatar_url" :alt="user.display_name" class="w-8 h-8 object-cover" />
           <div>
             <h1 class="text-2xl font-bold">{{ user.display_name }}</h1>
-            <p class="text-gray-600 dark:text-gray-400">@{{ user.username }}</p>
           </div>
         </div>
       </div>
@@ -43,7 +42,12 @@
 
         <!-- Owned Emotes Section -->
         <div class="mb-4 flex justify-between items-center">
-          <h2 class="text-xl font-bold">Owned Emotes</h2>
+          <h2 class="text-xl font-bold">
+            <span>Owned Emotes</span>
+            <span class="text-sm text-gray-400 dark:text-gray-400" v-if="totalOwnedEmotes > 0">
+              ({{ totalOwnedEmotes }})
+            </span>
+          </h2>
           <div class="inline-flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
             <Select
               v-model="limit"
@@ -93,6 +97,8 @@ const ownedEmotesPage = ref(1)
 
 // Initialize user data
 const { user, isLoading } = useUser(userId)
+
+const totalOwnedEmotes = computed(() => user.value?.owned_emotes?.length || 0)
 
 // Get emote sets and owned emotes using sub-hooks
 const emoteSets = computed(() => user.value?.emote_sets || [])
