@@ -20,6 +20,8 @@ Then I discovered that their [GraphQL API](https://7tv.io/v3/gql/playground)
 still had a category for latest emotes, so I used it to make this simple
 client. Also I wanted to pick up Vue again after a long time.
 
+**Note:** The 7TV website later added this feature back via [7tv.app/emotes/new](https://7tv.app/emotes/new). The main difference is that they use infinite scrolling, while this client uses paginated navigation.
+
 ## License
 
 MIT

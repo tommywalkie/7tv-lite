@@ -1,7 +1,7 @@
-export function injectLiwanScript(entity: string) {
+export function injectRybbitScript() {
   const script = document.createElement('script')
-  script.type = 'module'
-  script.src = 'https://liwan.tommywalkie.com/script.js'
-  script.dataset.entity = entity
+  script.src = 'https://rybbit.tommywalkie.com/api/script.js'
+  script.setAttribute('data-site-id', 'd9982f4516af')
+  script.defer = true
   document.head.appendChild(script)
 }

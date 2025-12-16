@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query'
 import { createHead } from '@unhead/vue'
-import { injectLiwanScript } from './utils/analytics'
+import { injectRybbitScript } from './utils/analytics'
 import 'virtual:windi.css'
 import './style.pcss'
 import App from './App.vue'
@@ -14,7 +14,7 @@ import UserDetails from './routes/UserDetails.vue'
 const isProd = import.meta.env.PROD
 
 if (isProd && window.location.hostname === '7tv-lite.tommywalkie.com') {
-  injectLiwanScript('7tv-lite')
+  injectRybbitScript()
 }
 
 const app = createApp(App)

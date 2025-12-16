@@ -17,25 +17,26 @@
     <section class="mb-8">
       <h2 class="text-xl font-semibold mb-4">Analytics</h2>
       <p class="mb-4">
-        We use Liwan, a privacy-focused analytics service hosted on our server, to collect anonymous usage data. The
-        data is publicly available and
-        <a href="https://liwan.tommywalkie.com/p/7tv-lite" target="_blank" rel="noopener noreferrer"
-          >can be viewed here</a
-        >.
+        We use Rybbit, a privacy-focused analytics service hosted on our server, to collect anonymous usage data.
       </p>
       <h3 class="text-lg font-semibold mb-2">What we collect:</h3>
       <ul class="list-disc pl-6 mb-4">
-        <li>Page visits</li>
+        <li>Page URLs and titles</li>
         <li>Referrer domain</li>
-        <li>Browser type</li>
+        <li>Browser type and version</li>
         <li>Operating system</li>
+        <li>Device type and screen resolution</li>
+        <li>Session duration</li>
+        <li>Country and region (derived from IP address, which is not stored)</li>
+        <li>UTM parameters</li>
       </ul>
       <h3 class="text-lg font-semibold mb-2">What we don't collect:</h3>
       <ul class="list-disc pl-6 mb-4">
-        <li>IP addresses (only used temporarily for generating anonymous visitor IDs)</li>
+        <li>IP addresses (used temporarily for location only, never stored)</li>
         <li>Search queries</li>
         <li>Personal information</li>
         <li>Cookies or persistent identifiers</li>
+        <li>Cross-site tracking</li>
       </ul>
     </section>
 
@@ -49,10 +50,7 @@
           their data handling practices.
         </li>
         <li>
-          <strong>Liwan:</strong> Privacy-focused analytics.
-          <a href="https://liwan.dev/reference/data" target="_blank" rel="noopener noreferrer"
-            >Learn more about their data collection</a
-          >.
+          <strong>Rybbit:</strong> Privacy-focused analytics.
         </li>
       </ul>
     </section>
